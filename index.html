@@ -184,6 +184,9 @@
     </style>
 </head>
 <body>
+    <audio id="bgMusic" loop>
+        <source src="audio/audio.mp3" type="audio/mpeg">
+    </audio>
     <div class="heart-container" id="heartContainer"></div>
 
     <div id="background-elements">
@@ -265,6 +268,23 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('bgMusic');
+            audio.volume = 0.5;
+            
+            // Thử chạy nhạc ngay lập tức
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Trình duyệt chặn autoplay. Chờ người dùng bấm vào trang.");
+                    // Nếu bị chặn, chờ người dùng bấm bất cứ đâu 1 cái là nhạc lên luôn
+                    window.addEventListener('click', function() {
+                        audio.play();
+                    }, { once: true });
+                });
+            }
+        });
         let currentPage = 1;
         const totalPages = 5;
         const card = document.getElementById('card');
