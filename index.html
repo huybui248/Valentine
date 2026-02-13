@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine - Cam Cam 💕</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffd6e8 0%, #ffb8da 50%, #ff9ecd 100%);
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 1rem 0.5rem;
+        }
+
+        /* --- Hiệu ứng bay bay (Background) --- */
+        .floating-item {
+            position: absolute;
+            animation: float 8s ease-in-out infinite;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .heart { font-size: 2rem; animation: float 6s ease-in-out infinite; }
+        .orange { font-size: 2.5rem; animation: float 7s ease-in-out infinite; }
+        .kitty { font-size: 2rem; animation: float 9s ease-in-out infinite; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Vị trí các icon bay */
+        .floating-item:nth-child(1) { animation-delay: 0s; left: 5%; }
+        .floating-item:nth-child(2) { animation-delay: 1s; left: 15%; }
+        .floating-item:nth-child(3) { animation-delay: 2s; left: 25%; }
+        .floating-item:nth-child(4) { animation-delay: 3s; left: 35%; }
+        .floating-item:nth-child(5) { animation-delay: 4s; left: 45%; }
+        .floating-item:nth-child(6) { animation-delay: 5s; left: 55%; }
+        .floating-item:nth-child(7) { animation-delay: 6s; left: 65%; }
+        .floating-item:nth-child(8) { animation-delay: 7s; left: 75%; }
+        .floating-item:nth-child(9) { animation-delay: 8s; left: 85%; }
+        .floating-item:nth-child(10) { animation-delay: 9s; left: 95%; }
+
+        /* --- Tiêu đề chính --- */
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            font-weight: 700;
+            background: linear-gradient(45deg, #d81b60, #ec407a, #f06292);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(2px 2px 4px rgba(255, 255, 255, 0.7));
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 10;
+            padding: 0 1rem;
+        }
+
+        /* --- Cấu trúc thẻ bài (Card) --- */
+        .card-container {
+            perspective: 2000px;
+            z-index: 10;
+        }
+
+        .card {
+            width: 90vw;
+            max-width: 360px; /* Tăng nhẹ độ rộng tối đa để ảnh đẹp hơn */
+            min-height: 500px; /* Tăng chiều cao để chứa ảnh to */
+            background: linear-gradient(145deg, #fff5f8 0%, #ffe4f0 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3), inset 0 0 60px rgba(255, 255, 255, 0.5);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            border: 3px solid #ffb8da;
+        }
+
+        .card-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Căn giữa nội dung */
+            backface-visibility: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+        .card-page.hidden { opacity: 0; pointer-events: none; }
+        .card-page.active { opacity: 1; transform: rotateY(0deg); }
+
+        /* --- CSS CHO ẢNH (ĐÃ SỬA) --- */
+        .page-icon {
+            width: 100%; /* Chiếm hết chiều ngang thẻ cha */
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .page-icon-img {
+            width: 100%;       /* Kéo dãn ảnh hết chiều ngang */
+            height: auto;      /* Chiều cao tự động theo tỉ lệ -> KHÔNG BỊ DẸP */
+            max-height: 250px; /* Giới hạn chiều cao để không đẩy chữ mất tiêu (tuỳ chỉnh số này) */
+            object-fit: cover; /* Đảm bảo ảnh lấp đầy khung mà vẫn đẹp */
+            border-radius: 15px; /* Bo góc ảnh */
+            box-shadow: 0 5px 15px rgba(194, 24, 91, 0.15); /* Bóng đổ nhẹ cho ảnh nổi */
+            display: block;
+        }
+
+        /* --- Nội dung chữ --- */
+        .message {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #c2185b;
+            text-align: justify; /* Căn đều 2 bên cho đẹp */
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            width: 100%;
+        }
+
+        .page-indicator {
+            position: absolute;
+            bottom: 1rem;
+            right: 1.5rem;
+            font-size: 0.85rem;
+            color: #c2185b;
+            font-weight: 700;
+        }
+
+        /* --- Hiệu ứng nổ tim --- */
+        .heart-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; }
+        .exploding-heart { position: absolute; font-size: 2rem; animation: explodeHeart 5s ease-out forwards; }
+        @keyframes explodeHeart {
+            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-100vh) scale(0.5) rotate(720deg); }
+        }
+
+        /* --- Nút bấm --- */
+        .nav-buttons { display: flex; gap: 1.5rem; margin-top: 2rem; z-index: 10; }
+        .nav-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+            color: white;
+        }
+        .nav-btn:active { transform: scale(0.95); }
+        .btn-back { background: linear-gradient(45deg, #ffb3c1, #ff8fab); }
+        .btn-next { background: linear-gradient(45deg, #ff8fab, #ff6b9d); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* --- Responsive (Mobile) --- */
+        @media (max-width: 640px) {
+            .card { width: 95vw; min-height: 450px; }
+            .main-title { font-size: 1.8rem; margin-bottom: 1rem; }
+            /* Đã xóa đoạn CSS ép nhỏ ảnh ở đây */
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-container" id="heartContainer"></div>
+
+    <div id="background-elements">
+        <div class="floating-item heart">💕</div>
+        <div class="floating-item orange">🍊</div>
+        <div class="floating-item kitty">🐱</div>
+        <div class="floating-item heart">💖</div>
+        <div class="floating-item orange">🍊</div>
+        <div class="floating-item kitty">😽</div>
+        <div class="floating-item heart">💘</div>
+    </div>
+
+    <h1 class="main-title">✨ Happy Valentine My Love Nguyễn Khánh (Cam Cam) ✨</h1>
+
+    <div class="card-container">
+        <div class="card" id="card">
+            <div class="card-page active" data-page="1">
+                <div class="page-icon">
+                    <img src="images/1.jpg" class="page-icon-img" alt="Anh yeu em">
+                </div>
+                <p class="message">
+                    Hé lô bé đẹp của anh,<br><br>
+                    Chắc đây là lần đầu tiên anh làm điều này cho em.
+                    Tuy có hơi sến súa nhưng mà mong em hãy đón nhận nó nhé hé hé 💕
+                </p>
+                <!-- <span class="page-indicator">1 / 5</span> -->
+            </div>
+
+            <div class="card-page hidden" data-page="2">
+                <div class="page-icon">
+                    <img src="images/2.jpg" class="page-icon-img" alt="Love you">
+                </div>
+                <p class="message">
+                    Anh chỉ muốn nói rằng anh yêu em rất nhiều.
+                    Có thể là một tình yêu siêu khổng lồ siêu bự bự 💖
+                </p>
+                <!-- <span class="page-indicator">2 / 5</span> -->
+            </div>
+
+            <div class="card-page hidden" data-page="3">
+                <div class="page-icon">
+                    <img src="images/3.jpg" class="page-icon-img" alt="Valentine vui ve">
+                </div>
+                <p class="message">
+                    Hi zọng bé yêu của anh có một ngày Valentine thật vui vẻ, cười nắc nẻ, he hẻ bên cạnh ck iu.
+                    Chúc bé yêu sẽ luôn vui tươi, đón nhận những điều tốt đẹp nhất 💗
+                </p>
+                <!-- <span class="page-indicator">3 / 5</span> -->
+            </div>
+
+            <div class="card-page hidden" data-page="4">
+                <div class="page-icon">
+                    <img src="images/4.jpg" class="page-icon-img" alt="Nam moi">
+                </div>
+                <p class="message">
+                    Chúc bé yêu của anh có một năm 2026 thật bùng nổ, khỏe khoắn hơn 2025.
+                    Hy vọng những điều em mong muốn sẽ thành hiện thực và đặc biệt là có nhìu tiền nhennn 💸
+                </p>
+                <!-- <span class="page-indicator">4 / 5</span> -->
+            </div>
+
+            <div class="card-page hidden" data-page="5">
+                <div class="page-icon">
+                    <img src="images/5.jpg" class="page-icon-img" alt="Mai ben nhau">
+                </div>
+                <p class="message">
+                    Và hỏng có gì tuyệt vời hơn là chúng ta sẽ bên nhau nhìu nhìu dịp Valentine nữa,
+                    có thể là suốt đời luôn. Mãi là tình nhân của nhau elmmm nhóeeeee.
+                    Yêu bé Cam Cam gất nhiều! 🫰❤️‍🔥💏
+                </p>
+                <!-- <span class="page-indicator">5 / 5</span> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn btn-back" id="backBtn" disabled>← Back</button>
+        <button class="nav-btn btn-next" id="nextBtn">Next →</button>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 5;
+        const card = document.getElementById('card');
+        const backBtn = document.getElementById('backBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function updateCard() {
+            document.querySelectorAll('.card-page').forEach(page => {
+                const pageNum = parseInt(page.dataset.page);
+                if (pageNum === currentPage) {
+                    page.classList.add('active');
+                    page.classList.remove('hidden');
+                } else {
+                    page.classList.add('hidden');
+                    page.classList.remove('active');
+                }
+            });
+            backBtn.disabled = currentPage === 1;
+            nextBtn.textContent = (currentPage === totalPages) ? 'Done ❤️' : 'Next →';
+        }
+
+        function flipCard(direction) {
+            card.style.transform = `rotateY(${direction === 'next' ? 180 : -180}deg)`;
+            setTimeout(() => {
+                currentPage = (direction === 'next') ? Math.min(currentPage + 1, totalPages) : Math.max(currentPage - 1, 1);
+                card.style.transition = 'none';
+                card.style.transform = 'rotateY(0deg)';
+                updateCard();
+                setTimeout(() => { card.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)'; }, 50);
+            }, 400);
+        }
+
+        backBtn.addEventListener('click', () => currentPage > 1 && flipCard('back'));
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) flipCard('next');
+            else explodeHearts();
+        });
+
+        function explodeHearts() {
+            const container = document.getElementById('heartContainer');
+            const hearts = ['💕', '💖', '💗', '💝', '💘'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'exploding-heart';
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = (Math.random() * 100) + '%';
+                    heart.style.top = (50 + Math.random() * 20) + '%';
+                    container.appendChild(heart);
+                    setTimeout(() => heart.remove(), 2000);
+                }, i * 50);
+            }
+            setTimeout(() => { currentPage = 1; updateCard(); }, 3000);
+        }
+    </script>
+</body>
+</html>
